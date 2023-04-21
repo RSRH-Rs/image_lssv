@@ -25,4 +25,4 @@ git clone https://github.com/RSRH-Rs/Hoshino-plugin-webscreenshot.git
 
 
 ## 示范
-[![](./example/example.png)]
+[![](./imgs/example.png)]
