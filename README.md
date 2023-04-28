@@ -8,7 +8,7 @@
 1. 在 HoshinoBot\hoshino\modules 目录下使用以下命令拉取本项目
 
 ```
-git clone https://github.com/RSRH-Rs/imgae_lssv.git
+git clone https://github.com/RSRH-Rs/image_lssv.git
 ```
 
 2. 从 github 仓库下载
