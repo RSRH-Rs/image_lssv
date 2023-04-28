@@ -13,9 +13,9 @@ git clone https://github.com/RSRH-Rs/imgae_lssv.git
 
 2. 从 github 仓库下载
 
-- 将`new_lssv`文件夹放入`hoshino/modules`
-- 在`hoshino/config/__bot__.py`中的`MODULES_ON`里，写入字符串`new_lssv`
-- 把 **`hoshino/modules/botmanage/service_manage.py`** 这个文件删掉**或者**把`new_lssv`文件下**所有** 的文件复制到 `hoshino/modules/botmanage/` 里面，否则会冲突。
+- 将`image_lssv`文件夹放入`hoshino/modules`
+- 把 **`hoshino/modules/botmanage/service_manage.py`** 这个文件删掉
+- 在`hoshino/config/__bot__.py`中的`MODULES_ON`里，写入字符串`image_lssv`
 
 ## 计划
 
