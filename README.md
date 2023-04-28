@@ -14,6 +14,9 @@ git clone https://github.com/RSRH-Rs/image_lssv.git
 2. 从 github 仓库下载
 
 - 将`image_lssv`文件夹放入`hoshino/modules`
+
+3. 配置
+
 - 把 **`hoshino/modules/botmanage/service_manage.py`** 这个文件删掉
 - 在`hoshino/config/__bot__.py`中的`MODULES_ON`里，写入字符串`image_lssv`
 
