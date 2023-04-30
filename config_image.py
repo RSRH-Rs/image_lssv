@@ -78,7 +78,7 @@ async def _draw_config_line(img: Image.Image, sv_name: str, index: int, status: 
             index = index + 5 - col_lines * col_current
             img.paste(config_line, (
                 26 * col_current + 850 * col_current,
-                index * 155 
+                index * 155 + 75
             ), config_line)
 
 def crop_center_img(
