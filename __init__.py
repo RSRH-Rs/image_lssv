@@ -14,6 +14,9 @@ from nonebot import MessageSegment
 from PIL import Image,UnidentifiedImageError
 import os
 
+QUALITY = 50 # 图片质量
+RANDOM_BG = True # 使用随机背景
+
 images_path = get_path("data","imgs")
 data_path = get_path("data")
 
@@ -54,7 +57,7 @@ async def send_image_lssv(session:CommandSession):
     previous_services_data = get_json_data(file_path=data_path+"/previous_services_data.json")
     previous_services_data = previous_services_data[group_id] if (previous_services_data is not None and group_id in previous_services_data.keys()) else {}
 
-    if not os.path.exists(get_path("data","imgs","bg.png")):
+    if RANDOM_BG or not os.path.exists(get_path("data","imgs","bg.png")):
         get_random_pic("bg.png")
 
     try:
@@ -63,14 +66,14 @@ async def send_image_lssv(session:CommandSession):
         bg_image = get_random_pic(file_name="bg.png")
         hoshino.logger.error("[WARNING] `bg.png`图片丢失，正在获取随机背景图片。")
 
-    if previous_services_data == svs_list and os.path.exists(get_path("data","imgs","config.png")):
-        await session.finish(MessageSegment.image("file:///" + images_path + "/config.png"))
+    if previous_services_data == svs_list and os.path.exists(get_path("data","imgs","config.jpg")):
+        await session.finish(MessageSegment.image("file:///" + images_path + "/config.jpg"))
 
     write_json_data(file_path=data_path+"/previous_services_data.json",content={group_id:svs_list})
 
     sv_image = await get_image_services(image=bg_image,group_id=group_id,sv_list=svs_list,width=base_w,height=based_h)
-    sv_image.save(images_path+"/config.png")
-    await session.send(MessageSegment.image("file:///"+images_path+"/config.png"))
+    sv_image.save(images_path+"/config.jpg", quality=QUALITY)
+    await session.send(MessageSegment.image("file:///"+images_path+"/config.jpg"))
 
 
 @on_command('enable', aliases=('启用', '开启', '打开'), permission=perm.GROUP, only_to_me=False)
