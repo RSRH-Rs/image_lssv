@@ -21,10 +21,6 @@ git clone https://github.com/RSRH-Rs/image_lssv.git
 - 在`hoshino/config/__bot__.py`中的`MODULES_ON`里，写入字符串`image_lssv`
 - 在`__init__.py`中编辑`QUALITY`和`RANDOM_BG`，指定图像质量和是否使用随机背景
 
-## 计划
-
-如果有需求的话提 issue 可以加上自定义背景\
-如果使用的过程出现太多服务导致背景图片变得很奇怪（的话直接提 issue。
 
 ## 其他
 
