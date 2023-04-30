@@ -19,7 +19,7 @@ git clone https://github.com/RSRH-Rs/image_lssv.git
 
 - 把 **`hoshino/modules/botmanage/service_manage.py`** 这个文件删掉
 - 在`hoshino/config/__bot__.py`中的`MODULES_ON`里，写入字符串`image_lssv`
-- 在`__init__.py`中编辑QUALITY和RANDOM_BG，指定图像质量和是否使用随机背景
+- 在`__init__.py`中编辑`QUALITY`和`RANDOM_BG`，指定图像质量和是否使用随机背景
 
 ## 计划
 
@@ -35,3 +35,4 @@ git clone https://github.com/RSRH-Rs/image_lssv.git
 ## 示范
 
 [![](https://github.com/RSRH-Rs/Hoshino-plugin-image-lssv/blob/master/data/imgs/example.png)]
+[![](https://github.com/madoka315/image_lssv/blob/dev/data/imgs/example_multi.png)]
