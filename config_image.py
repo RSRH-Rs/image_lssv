@@ -24,14 +24,25 @@ config_off = Image.open(get_path(images_path,"config_off.png"))
 
 async def get_image_services(sv_list:dict,image:Image,group_id:str,width:int,height:int) -> Image:
     tasks = []
-    size = (width, height)
-
+    col_num = 1 # 列数
+    total = len(sv_list)
+    
+    # 长宽比最小25%，若比例过怪，则分多列展示
+    _width, _height = width, height
+    while _width / _height <= 0.25:
+        col_num += 1
+        _width = width * col_num + 26 * (col_num - 1)
+        # 高度取配置需要的和第一列需要的max
+        col_lines = math.ceil((total + 5) / col_num)
+        _height = max(col_lines * 155, (col_lines - 5) * 155 + 850)  
+            
+    size = (_width, _height)
     resized_image = crop_center_img(image,based_w=size[0],based_h=size[1])
+    
     for index, key in enumerate(sv_list):
-        tasks.append(_draw_config_line(resized_image, key, index, sv_list[key]))
+        tasks.append(_draw_config_line(resized_image, key, index, sv_list[key], total, col_num))
 
     tasks_ = asyncio.gather(*tasks)
-
 
     sv_title = Image.open(get_path("data","imgs","lssv_title.png"))
     resized_image.paste(sv_title,(0,0),sv_title)
@@ -47,7 +58,7 @@ async def get_image_services(sv_list:dict,image:Image,group_id:str,width:int,hei
     return resized_image
 
 
-async def _draw_config_line(img: Image.Image, sv_name: str, index: int, status:bool):
+async def _draw_config_line(img: Image.Image, sv_name: str, index: int, status: bool, total: int, col_num :int = 1):
     config_line = Image.open(get_path("data", "imgs", "line.png"))
     config_line_draw = ImageDraw.Draw(config_line)
     config_line_draw.text((52, 65), sv_name, first_color, gs_font_36, 'lm')
@@ -55,8 +66,20 @@ async def _draw_config_line(img: Image.Image, sv_name: str, index: int, status:b
         config_line.paste(config_on, (613, 21), config_on)
     else:
         config_line.paste(config_off, (613, 21), config_off)
-
-    img.paste(config_line, (26, 850 + index * 155), config_line)
+    
+    if col_num == 1:
+        img.paste(config_line, (26, 850 + index * 155), config_line)
+    else:
+        col_lines = math.ceil((total + 5) / col_num) # 每列最大条数，第二列开始不需要lssv_title，多出5条的位置
+        if index + 5 < col_lines:
+            img.paste(config_line, (26, 850 + index * 155), config_line)
+        else:
+            col_current = (index + 5) // col_lines # 当前列
+            index = index + 5 - col_lines * col_current
+            img.paste(config_line, (
+                26 * col_current + 850 * col_current,
+                index * 155 
+            ), config_line)
 
 def crop_center_img(
     img: Image.Image, based_w: int, based_h: int

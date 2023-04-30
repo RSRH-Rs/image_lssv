@@ -8,7 +8,7 @@ from nonebot.argparse import ArgumentParser
 import hoshino
 from hoshino import Service, priv, util
 from hoshino.typing import HoshinoBot,CQEvent
-from .config_image import get_image_services,convert_img
+from .config_image import get_image_services
 from .utils import get_random_pic,get_path,get_json_data,write_json_data
 from nonebot import MessageSegment
 from PIL import Image,UnidentifiedImageError
@@ -47,7 +47,6 @@ async def send_image_lssv(session:CommandSession):
         if verbose_all or (sv.visible ^ only_hidden):
             status = True if on else False
             svs_list[str(sv.name)] = status
-
 
     base_w = 850
     based_h = 850 + 155 * len(svs_list)
