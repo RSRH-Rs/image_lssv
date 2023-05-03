@@ -102,8 +102,8 @@ async def send_image_lssv(session: CommandSession):
         width=base_w,
         height=based_h,
     )
-    sv_image.save(images_path + "/config.png", quality=QUALITY)
-    await session.send(MessageSegment.image("file:///" + images_path + "/config.png"))
+    sv_image.save(images_path + "/config"+group_id+".png", quality=QUALITY)
+    await session.send(MessageSegment.image("file:///" + images_path + "/config"+group_id+".png"))
 
 
 @on_command(
