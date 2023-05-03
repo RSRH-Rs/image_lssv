@@ -84,10 +84,10 @@ async def send_image_lssv(session: CommandSession):
         hoshino.logger.error("[WARNING] `bg.png`图片丢失，正在获取随机背景图片。")
 
     if previous_services_data == svs_list and os.path.exists(
-        get_path("data", "imgs", "config.png")
+        get_path("data", "imgs", "config"+group_id+".png")
     ):
         await session.finish(
-            MessageSegment.image("file:///" + images_path + "/config.png")
+            MessageSegment.image("file:///" + images_path + "/config"+group_id+".png")
         )
 
     write_json_data(
@@ -102,18 +102,18 @@ async def send_image_lssv(session: CommandSession):
         width=base_w,
         height=based_h,
     )
-    sv_image.save(images_path + "/config.png", quality=QUALITY)
-    await session.send(MessageSegment.image("file:///" + images_path + "/config.png"))
+    sv_image.save(images_path + "/config"+group_id+".png", quality=QUALITY)
+    await session.send(MessageSegment.image("file:///" + images_path + "/config"+group_id+".png"))
 
 
 @on_command(
-    "enable", aliases=("启用", "开启", "打开"), permission=perm.GROUP, only_to_me=False
+    "enable", aliases=("启用", "打开"), permission=perm.GROUP, only_to_me=False
 )
 async def enable_service(session: CommandSession):
     await switch_service(session, turn_on=True)
 
 
-@on_command("disable", aliases=("禁用", "关闭"), permission=perm.GROUP, only_to_me=False)
+@on_command("disable", aliases=("禁用"), permission=perm.GROUP, only_to_me=False)
 async def disable_service(session: CommandSession):
     await switch_service(session, turn_on=False)
 
