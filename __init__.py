@@ -84,10 +84,10 @@ async def send_image_lssv(session: CommandSession):
         hoshino.logger.error("[WARNING] `bg.png`图片丢失，正在获取随机背景图片。")
 
     if previous_services_data == svs_list and os.path.exists(
-        get_path("data", "imgs", "config.png")
+        get_path("data", "imgs", "config"+group_id+".png")
     ):
         await session.finish(
-            MessageSegment.image("file:///" + images_path + "/config.png")
+            MessageSegment.image("file:///" + images_path + "/config"+group_id+".png")
         )
 
     write_json_data(
