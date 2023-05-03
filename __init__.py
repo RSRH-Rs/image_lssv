@@ -107,13 +107,13 @@ async def send_image_lssv(session: CommandSession):
 
 
 @on_command(
-    "enable", aliases=("启用", "开启", "打开"), permission=perm.GROUP, only_to_me=False
+    "enable", aliases=("启用", "打开"), permission=perm.GROUP, only_to_me=False
 )
 async def enable_service(session: CommandSession):
     await switch_service(session, turn_on=True)
 
 
-@on_command("disable", aliases=("禁用", "关闭"), permission=perm.GROUP, only_to_me=False)
+@on_command("disable", aliases=("禁用"), permission=perm.GROUP, only_to_me=False)
 async def disable_service(session: CommandSession):
     await switch_service(session, turn_on=False)
 
