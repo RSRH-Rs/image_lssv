@@ -23,7 +23,7 @@ PRIV_TIP = f"群主={priv.OWNER} 群管={priv.ADMIN} 群员={priv.NORMAL} bot维
 @on_command(
     "lssv",
     aliases=("服务列表", "功能列表"),
-    permission=perm.GROUP_ADMIN,
+    permission=perm.GROUP_ADMIN | perm.GROUP_OWNER,
     only_to_me=False,
     shell_like=True,
 )
