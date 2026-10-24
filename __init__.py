@@ -74,6 +74,14 @@ async def send_image_lssv(session: CommandSession):
         else {}
     )
 
+    # 缓存命中时无需下载背景图，先查缓存再下载
+    if previous_services_data == svs_list and os.path.exists(
+        get_path("data", "imgs", "config"+group_id+".jpg")
+    ):
+        await session.finish(
+            MessageSegment.image("file:///" + images_path + "/config"+group_id+".jpg")
+        )
+
     if RANDOM_BG or not os.path.exists(get_path("data", "imgs", "bg.png")):
         await get_random_pic("bg.png")
 
@@ -82,13 +90,6 @@ async def send_image_lssv(session: CommandSession):
     except UnidentifiedImageError:
         bg_image = await get_random_pic(file_name="bg.png")
         hoshino.logger.error("[WARNING] `bg.png`图片丢失，正在获取随机背景图片。")
-
-    if previous_services_data == svs_list and os.path.exists(
-        get_path("data", "imgs", "config"+group_id+".png")
-    ):
-        await session.finish(
-            MessageSegment.image("file:///" + images_path + "/config"+group_id+".png")
-        )
 
     write_json_data(
         file_path=data_path + "/previous_services_data.json",
@@ -102,8 +103,8 @@ async def send_image_lssv(session: CommandSession):
         width=base_w,
         height=based_h,
     )
-    sv_image.save(images_path + "/config"+group_id+".png", quality=QUALITY)
-    await session.send(MessageSegment.image("file:///" + images_path + "/config"+group_id+".png"))
+    sv_image.convert("RGB").save(images_path + "/config"+group_id+".jpg", quality=QUALITY)
+    await session.send(MessageSegment.image("file:///" + images_path + "/config"+group_id+".jpg"))
 
 
 @on_command(
