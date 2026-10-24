@@ -2,7 +2,8 @@ from .utils import get_path, get_pic
 from PIL import Image, ImageDraw
 import asyncio
 import math
-from .fonts import gs_font_27, gs_font_40, gs_font_36
+from .fonts import gs_font_27, gs_font_40, genshin_font_origin
+from .config import FONT_SIZE, LINE_OPACITY, MIN_ASPECT
 from PIL import Image
 from typing import Optional, Tuple
 
@@ -17,6 +18,15 @@ config_off = Image.open(get_path(images_path, "config_off.png"))
 mask_pic = Image.open(get_path(images_path, "mask.png"))
 ring_pic = Image.open(get_path(images_path, "ring.png"))
 
+sv_font = genshin_font_origin(FONT_SIZE)
+
+# 行背景条只加载一次，并按 LINE_OPACITY 增强 alpha（原始素材内部 alpha 仅 115，对比度不足）
+line_pic = Image.open(get_path(images_path, "line.png")).convert("RGBA")
+if LINE_OPACITY and LINE_OPACITY > 1.0:
+    _r, _g, _b, _a = line_pic.split()
+    _a = _a.point(lambda v: min(255, int(v * LINE_OPACITY)))
+    line_pic = Image.merge("RGBA", (_r, _g, _b, _a))
+
 
 async def get_image_services(
     sv_list: dict, image: Image, group_id: str, width: int, height: int
@@ -25,9 +35,9 @@ async def get_image_services(
     col_num = 1  # 列数
     total = len(sv_list)
 
-    # 长宽比最小25%，若比例过怪，则分多列展示
+    # 长宽比最小MIN_ASPECT，若比例过怪，则分多列展示
     _width, _height = width, height
-    while _width / _height <= 0.25:
+    while _width / _height <= MIN_ASPECT:
         col_num += 1
         _width = width * col_num + 26 * (col_num - 1)
         # 高度取配置需要的和第一列需要的max
@@ -75,9 +85,9 @@ async def _draw_config_line(
     total: int,
     col_num: int = 1,
 ):
-    config_line = Image.open(get_path("data", "imgs", "line.png"))
+    config_line = line_pic.copy()
     config_line_draw = ImageDraw.Draw(config_line)
-    config_line_draw.text((52, 65), sv_name, first_color, gs_font_36, "lm")
+    config_line_draw.text((52, 65), sv_name, first_color, sv_font, "lm")
     if status:
         config_line.paste(config_on, (613, 21), config_on)
     else:
@@ -109,13 +119,13 @@ def crop_center_img(img: Image.Image, based_w: int, based_h: int) -> Image.Image
     new_w = math.ceil(based_h * float(scale_f))
     new_h = math.ceil(based_w / float(scale_f))
     if scale_f > based_scale:
-        resize_img = img.resize((new_w, based_h), Image.ANTIALIAS)
+        resize_img = img.resize((new_w, based_h), Image.LANCZOS)
         x1 = int(new_w / 2 - based_w / 2)
         y1 = 0
         x2 = int(new_w / 2 + based_w / 2)
         y2 = based_h
     else:
-        resize_img = img.resize((based_w, new_h), Image.ANTIALIAS)
+        resize_img = img.resize((based_w, new_h), Image.LANCZOS)
         x1 = 0
         y1 = int(new_h / 2 - based_h / 2)
         x2 = based_w

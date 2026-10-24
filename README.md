@@ -19,7 +19,15 @@ git clone https://github.com/RSRH-Rs/image_lssv.git
 
 - 把 **`hoshino/modules/botmanage/service_manage.py`** 这个文件删掉
 - 在`hoshino/config/__bot__.py`中的`MODULES_ON`里，写入字符串`image_lssv`
-- 在`__init__.py`中编辑`QUALITY`和`RANDOM_BG`，指定图像质量和是否使用随机背景
+- 在模块目录下的`config.py`中按需调整：
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| `QUALITY` | 60 | 输出 JPEG 的质量（1-95） |
+| `RANDOM_BG` | True | 是否使用随机背景 |
+| `FONT_SIZE` | 40 | 条目服务名字号（行高 155px，建议 32-52） |
+| `LINE_OPACITY` | 1.8 | 行背景条不透明度增益，1.0 为原始素材，越大越实 |
+| `MIN_ASPECT` | 0.20 | 图片宽/高低于此值时自动分列，调小则列数更少、字显示更大 |
 
 
 ## 其他
